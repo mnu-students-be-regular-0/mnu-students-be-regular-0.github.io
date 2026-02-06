@@ -1,6 +1,6 @@
+streamlit
 groq
-pydub
-fpdf2
+PyPDF2
+fpdf
 arabic-reshaper
 python-bidi
-PyPDF2
