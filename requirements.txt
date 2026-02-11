@@ -1,6 +1,0 @@
-streamlit
-groq
-PyPDF2
-fpdf
-arabic-reshaper
-python-bidi
