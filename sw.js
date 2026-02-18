@@ -1,5 +1,5 @@
-const CACHE_NAME = 'study-organizer-v3';
-const ASSETS_TO_CACHE = [
+const CACHE = 'so-v4';
+const PRE_CACHE = [
   './',
   './index.html',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
@@ -7,74 +7,41 @@ const ASSETS_TO_CACHE = [
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-regular-400.woff2',
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js',
+  'https://i.postimg.cc/qBPrY3K7/A-professional-square-2k-202602181742.jpg',
+  'https://i.postimg.cc/HxQzPdM1/Create-a-highresolution-2k-202602180610.jpg',
 ];
 
-// ── Install: cache all assets ──────────────────────────────────────────────
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      // Cache each asset individually so one failure doesn't block the rest
-      return Promise.allSettled(
-        ASSETS_TO_CACHE.map(url =>
-          cache.add(url).catch(err =>
-            console.warn('[SW] Failed to cache:', url, err)
-          )
-        )
-      );
-    }).then(() => self.skipWaiting())
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE).then(c =>
+      Promise.allSettled(PRE_CACHE.map(url =>
+        c.add(url).catch(err => console.warn('[SW] skip:', url, err))
+      ))
+    ).then(() => self.skipWaiting())
   );
 });
 
-// ── Activate: remove old caches ────────────────────────────────────────────
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => {
-            console.log('[SW] Deleting old cache:', key);
-            return caches.delete(key);
-          })
-      )
-    ).then(() => self.clients.claim())
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
   );
 });
 
-// ── Fetch: Cache-first, fallback to network ────────────────────────────────
-self.addEventListener('fetch', event => {
-  // Skip non-GET requests and chrome-extension requests
-  if (event.request.method !== 'GET') return;
-  if (event.request.url.startsWith('chrome-extension://')) return;
-
-  event.respondWith(
-    caches.match(event.request).then(cached => {
+self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  if (!e.request.url.startsWith('http')) return;
+  e.respondWith(
+    caches.match(e.request).then(cached => {
       if (cached) return cached;
-
-      return fetch(event.request)
-        .then(response => {
-          // Only cache valid same-origin or CORS responses
-          if (
-            !response ||
-            response.status !== 200 ||
-            (response.type !== 'basic' && response.type !== 'cors')
-          ) {
-            return response;
-          }
-
-          // Clone before consuming
-          const toCache = response.clone();
-          caches.open(CACHE_NAME).then(cache =>
-            cache.put(event.request, toCache)
-          );
-          return response;
-        })
-        .catch(() => {
-          // Offline fallback for navigation requests
-          if (event.request.mode === 'navigate') {
-            return caches.match('./index.html');
-          }
-        });
+      return fetch(e.request).then(res => {
+        if (res && res.status === 200 && (res.type === 'basic' || res.type === 'cors')) {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
+        return res;
+      }).catch(() => e.request.mode === 'navigate' ? caches.match('./index.html') : undefined);
     })
   );
 });
