@@ -1260,7 +1260,26 @@
   /* ── 18. PDF DOWNLOAD (fixed — uses Blob instead of about:blank) ───── */
   function dlAsPDF(){
     const content=document.getElementById('txEdit')?.innerHTML||'';
-    const html=`<!DOCTYPE html><html dir="ltr"><head><meta charset="UTF-8"><title>النص المحرر</title><style>body{font-family:'Segoe UI',sans-serif;padding:2cm;line-height:1.8;font-size:14pt;color:#1e293b}@media print{body{padding:1cm}}.highlight-yellow{background:#FEF08A;padding:2px 4px;border-radius:3px}.highlight-green{background:#BBF7D0;padding:2px 4px;border-radius:3px}.highlight-blue{background:#BFDBFE;padding:2px 4px;border-radius:3px}.highlight-pink{background:#FBCFE8;padding:2px 4px;border-radius:3px}</style></head><body>${content}</body></html>`;
+    // فحص هل المستخدم اختار وضع العمودين أم لا
+const isTwoCol = window._isTwoCol === true;
+const colCSS = isTwoCol ? `body { column-count: 2; column-gap: 1cm; column-rule: 1px solid #cbd5e1; text-align: justify; }` : ``;
+
+const html = `<!DOCTYPE html><html dir="ltr"><head><meta charset="UTF-8"><title>Editor Content</title><style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    padding: 1.5cm;
+    line-height: 1.6;
+    font-size: 12pt;
+    color: #1e293b;
+    direction: ltr; /* التنسيق من اليسار لليمين */
+  }
+  @media print {
+    body { padding: 1cm; }
+    ${colCSS}
+  }
+  /* تنسيق العناوين عشان ما تتقسمش بين عمودين */
+  h1, h2, h3 { column-span: all; text-align: center; }
+</style></head><body>${content}</body></html>`;
     const blob=new Blob([html],{type:'text/html;charset=utf-8'});
     const url=URL.createObjectURL(blob);
     const win=window.open(url,'_blank','width=900,height=700');
