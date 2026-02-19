@@ -14,8 +14,8 @@
   <link rel="icon" type="image/jpeg" href="https://i.postimg.cc/qBPrY3K7/A-professional-square-2k-202602181742.jpg">
   <link rel="apple-touch-icon" href="https://i.postimg.cc/qBPrY3K7/A-professional-square-2k-202602181742.jpg">
 
-  <!-- Manifest (inline via JS — see bottom of file) -->
-  <link rel="manifest" id="pwa-manifest">
+  <!-- Manifest — ملف خارجي حقيقي -->
+  <link rel="manifest" href="./manifest.json">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -538,28 +538,7 @@
   <script>
   'use strict';
 
-  /* ── 1. PWA MANIFEST (inline) ──────────────────────────────────────── */
-  (function injectPWA() {
-    const manifestData = {
-      "id": "be_regular_vfinal_" + Date.now(),
-      "name": "Be Regular",
-      "short_name": "Be Regular",
-      "start_url": "./",
-      "display": "standalone",
-      "background_color": "#050816",
-      "theme_color": "#0ea5e9",
-      "icons": [
-        {
-          "src": "https://i.postimg.cc/qBPrY3K7/A-professional-square-2k-202602181742.jpg",
-          "sizes": "512x512",
-          "type": "image/jpeg",
-          "purpose": "any maskable"
-        }
-      ]
-    };
-    const blob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
-    document.querySelector('#pwa-manifest').setAttribute('href', URL.createObjectURL(blob));
-  })();
+  /* ── 1. PWA MANIFEST — ملف manifest.json خارجي (انظر الـ <link> في الـ head) ── */
 
   /* ── 2. SERVICE WORKER ─────────────────────────────────────────────── */
   if ('serviceWorker' in navigator) {
