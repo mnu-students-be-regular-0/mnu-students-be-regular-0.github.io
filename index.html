@@ -1375,4 +1375,38 @@
   }
   </script>
 </body>
+<style>
+/* كود الجوكر للطباعة والـ PDF */
+@media print {
+    /* إخفاء كل حاجة في الموقع ما عدا النص اللي هنطبعه */
+    body > *:not(#finalOutput) {
+        display: none !important;
+    }
+    
+    #finalOutput {
+        display: block !important;
+        column-count: 2 !important;
+        column-gap: 30px !important;
+        text-align: justify !important;
+        direction: rtl !important;
+        font-size: 12pt !important;
+        width: 100% !important;
+    }
+
+    /* العناوين تاخد العرض كله وتبقى في النص */
+    #finalOutput h2, #finalOutput h3 {
+        column-span: all !important;
+        text-align: center !important;
+        margin-bottom: 15px !important;
+    }
+}
+</style>
+
+<script>
+// الحركة دي بتخلي أي زرار طباعة يفتح شاشة الطباعة بتاعة المتصفح
+// اللي هي الوحيدة اللي بتدعم العمودين صح
+function forcePrint() {
+    window.print();
+}
+</script>
 </html>
