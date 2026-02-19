@@ -5,11 +5,11 @@
   "start_url": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#050816",
+  "background_color": "#0d0d0d",
   "theme_color": "#0ea5e9",
   "icons": [
     {
-      "src": "https://i.postimg.cc/qBPrY3K7/A-professional-square-2k-202602181742.jpg",
+      "src": "https://i.postimg.cc/DybKVcQv/Action-image-generation-action-input.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
