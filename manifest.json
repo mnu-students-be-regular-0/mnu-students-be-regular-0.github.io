@@ -5,14 +5,14 @@
   "start_url": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#0a1a0a",
-  "theme_color": "#0a1a0a",
+  "background_color": "#050816",
+  "theme_color": "#0ea5e9",
   "icons": [
     {
-      "src": "https://i.postimg.cc/mr6tXwNF/A-professional-3d-202602190558-(2).png",
+      "src": "https://i.postimg.cc/5t8Rp7Mp/Action-image-generation-action-input-1-removebg-preview.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ]
 }
