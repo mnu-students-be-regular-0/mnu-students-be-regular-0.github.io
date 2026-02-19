@@ -15,7 +15,6 @@
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="manifest" href="./manifest.json?v=11">
-  <link rel="stylesheet" href="print.css">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1311,7 +1310,38 @@
     document.getElementById('brv-content').innerHTML='<div class="brv-loading"><div class="brv-spinner"></div><p>جاري التحميل…</p></div>';
     modal.style.display='flex';
     document.getElementById('brv-close-btn').onclick=()=>{modal.style.display='none';document.getElementById('brv-content').innerHTML='';};
-    document.getElementById('brv-download-btn').onclick=()=>brvDL(brvCurrentFile.data,brvCurrentFile.name);
+    document.getElementById('brv-download-btn').onclick = () => {
+    // 1. بناخد النص اللي جوه القارئ
+    let content = document.getElementById('brv-content').innerHTML;
+    
+    // 2. بنفتح نافذة جديدة للطباعة
+    let printWin = window.open('', '', 'width=900,height=700');
+    
+    // 3. بنكتب كود التنسيق جوه النافذة دي (عشان نضمن العمودين)
+    printWin.document.write(`
+        <html>
+            <head>
+                <style>
+                    body { direction: rtl; font-family: Arial, sans-serif; padding: 20px; }
+                    .column-text { 
+                        column-count: 2; 
+                        column-gap: 30px; 
+                        text-align: justify; 
+                    }
+                    h2 { text-align: center; column-span: all; }
+                </style>
+            </head>
+            <body>
+                <div class="column-text">${content}</div>
+                <script>
+                    // بنخليها تطبع وتقفل لوحدها بعد ما تخلص
+                    setTimeout(() => { window.print(); window.close(); }, 500);
+                <\/script>
+            </body>
+        </html>
+    `);
+    printWin.document.close();
+};
   }
   async function openFile(data,name){
     if(!data||!name)return;
@@ -1375,19 +1405,4 @@
   }
   </script>
 </body>
-<style>
-@media print {
-    /* بنقول للمتصفح أي حاجة فيها كلام كتير اقسمها عمودين */
-    div, section, article {
-        column-count: 2 !important;
-        column-gap: 20px !important;
-        text-align: justify !important;
-    }
-
-    /* بنخفي الأزرار والقوائم عشان ما تبوظش شكل الـ PDF */
-    button, nav, .no-print {
-        display: none !important;
-    }
-}
-</style>
 </html>
