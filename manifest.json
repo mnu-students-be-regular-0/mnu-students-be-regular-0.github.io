@@ -1,0 +1,18 @@
+{
+  "name": "Be Regular",
+  "short_name": "Be Regular",
+  "description": "Be Regular - نظم موادك ومحاضراتك بسهولة",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#050816",
+  "theme_color": "#0ea5e9",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/qBPrY3K7/A-professional-square-2k-202602181742.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
