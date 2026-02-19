@@ -12,8 +12,8 @@
 
   <!-- Favicon -->
   <meta name="theme-color" content="#050816">
-  <link rel="icon" type="image/png" href="https://i.postimg.cc/7LBmKpW1/Adobe-Express-file.png?v=1">
-  <link rel="apple-touch-icon" href="https://i.postimg.cc/7LBmKpW1/Adobe-Express-file.png?v=1">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/5t8Rp7Mp/Action-image-generation-action-input-1-removebg-preview.png?v=3">
+  <link rel="apple-touch-icon" href="https://i.postimg.cc/5t8Rp7Mp/Action-image-generation-action-input-1-removebg-preview.png?v=3">
 
   <!-- Manifest مع cache-bust -->
   <link rel="manifest" href="./manifest.json?v=5">
@@ -1240,9 +1240,9 @@
         <button onclick="const c=document.getElementById('txEdit'),s=parseInt(getComputedStyle(c).fontSize);if(s>12)c.style.fontSize=(s-2)+'px'" style="background:rgba(30,41,59,.62);color:#94a3b8;border:1px solid rgba(255,255,255,.11);padding:.5rem 1rem;border-radius:.5rem;cursor:pointer;font-weight:600">A-</button>
       </div></div>
       <div style="margin-bottom:1.5rem"><label style="display:block;margin-bottom:.5rem;font-weight:600;color:#94a3b8">📝 النص المحرر:</label>
-        <div id="txEdit" contenteditable="true" style="width:100%;min-height:300px;padding:1.5rem;border:1px solid rgba(255,255,255,.11);border-radius:.75rem;background:rgba(255,255,255,.98);color:#1e293b;font-size:16px;line-height:1.8;overflow-y:auto;max-height:500px;column-count:2;column-gap:2rem;text-align:left;direction:ltr"></div></div>
+        <div id="txEdit" contenteditable="true" style="width:100%;min-height:300px;padding:1.5rem;border:1px solid rgba(255,255,255,.11);border-radius:.75rem;background:rgba(255,255,255,.98);color:#1e293b;font-size:16px;line-height:1.8;overflow-y:auto;max-height:500px;column-count:1;column-gap:2rem;text-align:left;direction:ltr"></div></div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-        <button onclick="const i=document.getElementById('txtIn'),o=document.getElementById('txEdit');if(!o.innerHTML)o.innerHTML=i.value.replace(/\\n/g,'<br>')" class="btn" style="background:rgba(6,40,20,.52);color:#34d399;border:1px solid rgba(52,211,153,.42)">✓ تحويل النص</button>
+        <button onclick="toggleLayout()" id="toggleLayoutBtn" class="btn" style="background:rgba(6,40,20,.52);color:#34d399;border:1px solid rgba(52,211,153,.42)">⬜ عمود واحد</button>
         <button onclick="if(confirm('مسح كل المحتوى؟')){document.getElementById('txtIn').value='';document.getElementById('txEdit').innerHTML=''}" class="btn" style="background:rgba(40,20,0,.52);color:#fbbf24;border:1px solid rgba(251,191,36,.42)">🗑️ مسح الكل</button>
         <button onclick="const c=document.getElementById('txEdit'),r=document.createRange();r.selectNodeContents(c);const s=window.getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy');alert('تم النسخ ✓')}catch{}s.removeAllRanges()" class="btn" style="background:rgba(40,10,60,.52);color:#a78bfa;border:1px solid rgba(167,139,250,.42)">📋 نسخ النص</button>
         <button onclick="dlAsPDF()" class="btn" style="background:rgba(60,10,40,.52);color:#f9a8d4;border:1px solid rgba(249,168,212,.42)">📥 تحميل PDF</button>
@@ -1277,6 +1277,30 @@
       const a=document.createElement('a');a.href=url;a.download='نص-محرر.html';
       document.body.appendChild(a);a.click();document.body.removeChild(a);
       setTimeout(()=>URL.revokeObjectURL(url),5000);
+    }
+  }
+
+  /* ── 18b. TOGGLE LAYOUT (عمود / عمودين) ────────────────────────────── */
+  let isTwoCol = false;
+  function toggleLayout() {
+    const editor = document.getElementById('txEdit');
+    const btn    = document.getElementById('toggleLayoutBtn');
+    if (!editor) return;
+    isTwoCol = !isTwoCol;
+    if (isTwoCol) {
+      editor.style.columnCount = '2';
+      editor.style.columnGap   = '2rem';
+      btn.textContent = '▦ عمودان';
+      btn.style.background = 'rgba(14,50,80,.62)';
+      btn.style.color      = '#7dd3fc';
+      btn.style.border     = '1px solid rgba(56,189,248,.52)';
+    } else {
+      editor.style.columnCount = '1';
+      editor.style.columnGap   = 'normal';
+      btn.textContent = '⬜ عمود واحد';
+      btn.style.background = 'rgba(6,40,20,.52)';
+      btn.style.color      = '#34d399';
+      btn.style.border     = '1px solid rgba(52,211,153,.42)';
     }
   }
 
