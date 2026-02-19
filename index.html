@@ -12,11 +12,11 @@
 
   <!-- Favicon -->
   <meta name="theme-color" content="#050816">
-  <link rel="icon" type="image/png" href="https://i.postimg.cc/5t8Rp7Mp/Action-image-generation-action-input-1-removebg-preview.png?v=3">
-  <link rel="apple-touch-icon" href="https://i.postimg.cc/5t8Rp7Mp/Action-image-generation-action-input-1-removebg-preview.png?v=3">
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/8074/8074788.png?v=4">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/8074/8074788.png?v=4">
 
   <!-- Manifest مع cache-bust -->
-  <link rel="manifest" href="./manifest.json?v=5">
+  <link rel="manifest" href="./manifest.json?v=6">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1281,28 +1281,26 @@
   }
 
   /* ── 18b. TOGGLE LAYOUT (عمود / عمودين) ────────────────────────────── */
-  let isTwoCol = false;
-  function toggleLayout() {
+  window._isTwoCol = false;
+  window.toggleLayout = function() {
     const editor = document.getElementById('txEdit');
     const btn    = document.getElementById('toggleLayoutBtn');
-    if (!editor) return;
-    isTwoCol = !isTwoCol;
-    if (isTwoCol) {
+    if (!editor || !btn) { console.warn('toggleLayout: عناصر مش موجودة'); return; }
+    window._isTwoCol = !window._isTwoCol;
+    if (window._isTwoCol) {
       editor.style.columnCount = '2';
       editor.style.columnGap   = '2rem';
-      btn.textContent = '▦ عمودان';
-      btn.style.background = 'rgba(14,50,80,.62)';
-      btn.style.color      = '#7dd3fc';
-      btn.style.border     = '1px solid rgba(56,189,248,.52)';
+      editor.style.direction   = 'ltr';
+      editor.style.textAlign   = 'left';
+      btn.textContent          = '▦ عمودان';
+      btn.style.cssText        = 'background:rgba(14,50,80,.62);color:#7dd3fc;border:1px solid rgba(56,189,248,.52);padding:.75rem 1.5rem;border-radius:.75rem;cursor:pointer;font-size:1rem;font-weight:600;transition:all .3s;display:inline-flex;align-items:center;gap:.5rem';
     } else {
       editor.style.columnCount = '1';
       editor.style.columnGap   = 'normal';
-      btn.textContent = '⬜ عمود واحد';
-      btn.style.background = 'rgba(6,40,20,.52)';
-      btn.style.color      = '#34d399';
-      btn.style.border     = '1px solid rgba(52,211,153,.42)';
+      btn.textContent          = '⬜ عمود واحد';
+      btn.style.cssText        = 'background:rgba(6,40,20,.52);color:#34d399;border:1px solid rgba(52,211,153,.42);padding:.75rem 1.5rem;border-radius:.75rem;cursor:pointer;font-size:1rem;font-weight:600;transition:all .3s;display:inline-flex;align-items:center;gap:.5rem';
     }
-  }
+  };
 
   /* ── 19. BRV (Built-in Reader/Viewer) ──────────────────────────────── */
   let brvCurrentFile={data:null,name:null};
